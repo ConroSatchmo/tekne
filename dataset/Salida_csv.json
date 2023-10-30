@@ -1,0 +1,27 @@
+{
+	"name": "Salida_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "storage2",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Salida"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "tablas.csv",
+				"folderPath": "Destino",
+				"fileSystem": "contenedortekne"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"name": "Entrada_xlsx",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "storage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Entrada"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Tablas_generadas_Tekne.xlsx",
+				"folderPath": "Origen",
+				"fileSystem": "contenedortekne"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Tabla",
+				"type": "String"
+			},
+			{
+				"name": "Uso",
+				"type": "String"
+			}
+		]
+	}
+}
