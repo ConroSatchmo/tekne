@@ -39,12 +39,24 @@
 			"sinks": [],
 			"transformations": [
 				{
+					"name": "selectcharacters"
+				},
+				{
+					"name": "filternull"
+				},
+				{
+					"name": "selectepisodes"
+				},
+				{
+					"name": "joinsfilternullselectepisodes"
+				},
+				{
 					"name": "select1"
 				}
 			],
 			"scriptLines": [
 				"source(output(",
-				"          id as string,",
+				"          id as integer,",
 				"          name as string,",
 				"          normalized_name as string,",
 				"          gender as string",
@@ -53,7 +65,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> sourcesimpsoncharacters",
 				"source(output(",
-				"          id as string,",
+				"          id as integer,",
 				"          image_url as string,",
 				"          imdb_rating as string,",
 				"          imdb_votes as string,",
@@ -99,9 +111,45 @@
 				"     ignoreNoFilesFound: false) ~> sourcesimpsonscriptlines",
 				"sourcesimpsoncharacters select(mapColumn(",
 				"          id,",
-				"          name,",
-				"          normalized_name,",
+				"          name = normalized_name,",
 				"          gender",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectcharacters",
+				"selectcharacters filter(gender !='NULL') ~> filternull",
+				"sourcesimpsonepisodes select(mapColumn(",
+				"          id,",
+				"          imdb_rating,",
+				"          number_in_season,",
+				"          original_air_date,",
+				"          production_code,",
+				"          season,",
+				"          title,",
+				"          us_viewers_in_millions,",
+				"          video_url,",
+				"          views",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectepisodes",
+				"filternull, selectepisodes join(selectcharacters@id == selectepisodes@id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinsfilternullselectepisodes",
+				"joinsfilternullselectepisodes select(mapColumn(",
+				"          id = selectcharacters@id,",
+				"          name,",
+				"          gender,",
+				"          id = selectepisodes@id,",
+				"          imdb_rating,",
+				"          number_in_season,",
+				"          original_air_date,",
+				"          production_code,",
+				"          season,",
+				"          title,",
+				"          us_viewers_in_millions,",
+				"          video_url,",
+				"          views",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1"
