@@ -1,42 +1,110 @@
 {
-	"name": "dataflow1",
+	"name": "simpsonflow",
 	"properties": {
+		"folder": {
+			"name": "simpson"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "Entrada_xlsx",
+						"referenceName": "entrada_simpsons_characters",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "sourcesimpsoncharacters"
 				},
 				{
-					"name": "source2"
+					"dataset": {
+						"referenceName": "entrada_simpsons_episodes",
+						"type": "DatasetReference"
+					},
+					"name": "sourcesimpsonepisodes"
 				},
 				{
-					"name": "source3"
+					"dataset": {
+						"referenceName": "entrada_simpsons_locations",
+						"type": "DatasetReference"
+					},
+					"name": "sourcesimpsonlocations"
 				},
 				{
-					"name": "source4"
+					"dataset": {
+						"referenceName": "entrada_simpsons_script_lines",
+						"type": "DatasetReference"
+					},
+					"name": "sourcesimpsonscriptlines"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "select1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
-				"          Tabla as string,",
-				"          Uso as string",
+				"          id as string,",
+				"          name as string,",
+				"          normalized_name as string,",
+				"          gender as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source2",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source3",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source4"
+				"     ignoreNoFilesFound: false) ~> sourcesimpsoncharacters",
+				"source(output(",
+				"          id as string,",
+				"          image_url as string,",
+				"          imdb_rating as string,",
+				"          imdb_votes as string,",
+				"          number_in_season as string,",
+				"          number_in_series as string,",
+				"          original_air_date as string,",
+				"          original_air_year as string,",
+				"          production_code as string,",
+				"          season as string,",
+				"          title as string,",
+				"          us_viewers_in_millions as string,",
+				"          video_url as string,",
+				"          views as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourcesimpsonepisodes",
+				"source(output(",
+				"          id as string,",
+				"          name as string,",
+				"          normalized_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourcesimpsonlocations",
+				"source(output(",
+				"          id as string,",
+				"          episode_id as string,",
+				"          number as string,",
+				"          raw_text as string,",
+				"          timestamp_in_ms as string,",
+				"          speaking_line as string,",
+				"          character_id as string,",
+				"          location_id as string,",
+				"          raw_character_text as string,",
+				"          raw_location_text as string,",
+				"          spoken_words as string,",
+				"          normalized_text as string,",
+				"          word_count as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourcesimpsonscriptlines",
+				"sourcesimpsoncharacters select(mapColumn(",
+				"          id,",
+				"          name,",
+				"          normalized_name,",
+				"          gender",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
 			]
 		}
 	}

@@ -1,0 +1,36 @@
+{
+	"name": "salida_simpson_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "storagetekne",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Salida"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "simpsons.csv",
+				"folderPath": "Destino",
+				"fileSystem": "contenedortekne"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Tabla",
+				"type": "String"
+			},
+			{
+				"name": "Uso",
+				"type": "String"
+			}
+		]
+	}
+}
