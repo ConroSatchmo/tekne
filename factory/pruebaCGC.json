@@ -1,0 +1,9 @@
+{
+	"name": "pruebaCGC",
+	"location": "brazilsouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "662c1b06-a157-47df-b276-b3cf7102eaed",
+		"tenantId": "15d35be8-75e6-4c6c-8e94-424900997a8e"
+	}
+}
