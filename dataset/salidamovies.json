@@ -1,0 +1,23 @@
+{
+	"name": "salidamovies",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "storagetekne",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "Destino",
+				"fileSystem": "contenedortekne"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

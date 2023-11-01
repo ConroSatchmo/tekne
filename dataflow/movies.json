@@ -1,0 +1,56 @@
+{
+	"name": "movies",
+	"properties": {
+		"folder": {
+			"name": "movies"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "entrada_movies",
+						"type": "DatasetReference"
+					},
+					"name": "sourcemovies"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "salidamovies",
+						"type": "DatasetReference"
+					},
+					"name": "sinkmovies"
+				}
+			],
+			"transformations": [
+				{
+					"name": "extractyear"
+				},
+				{
+					"name": "titleok"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          movieId as integer,",
+				"          title as string,",
+				"          genres as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourcemovies",
+				"sourcemovies derive(Year = toInteger(trim(right(title, 6), '()'))) ~> extractyear",
+				"extractyear derive(title = toString(left(title, length(title)-6))) ~> titleok",
+				"titleok sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinkmovies"
+			]
+		}
+	}
+}
