@@ -1,0 +1,15 @@
+{
+	"name": "api",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "api",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Entrada"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
