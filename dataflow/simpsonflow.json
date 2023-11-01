@@ -36,7 +36,22 @@
 					"name": "sourcesimpsonscriptlines"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "salida_simpson_csv",
+						"type": "DatasetReference"
+					},
+					"name": "destinosimpsons"
+				},
+				{
+					"dataset": {
+						"referenceName": "salida_scriptlines_parquet",
+						"type": "DatasetReference"
+					},
+					"name": "destinoscripts"
+				}
+			],
 			"transformations": [
 				{
 					"name": "selectcharacters"
@@ -51,7 +66,13 @@
 					"name": "joinsfilternullselectepisodes"
 				},
 				{
-					"name": "select1"
+					"name": "selectjoinchractersepisodes"
+				},
+				{
+					"name": "join"
+				},
+				{
+					"name": "selectlocations"
 				}
 			],
 			"scriptLines": [
@@ -84,7 +105,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> sourcesimpsonepisodes",
 				"source(output(",
-				"          id as string,",
+				"          id as integer,",
 				"          name as string,",
 				"          normalized_name as string",
 				"     ),",
@@ -132,7 +153,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectepisodes",
 				"filternull, selectepisodes join(selectcharacters@id == selectepisodes@id,",
-				"     joinType:'inner',",
+				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> joinsfilternullselectepisodes",
@@ -152,7 +173,53 @@
 				"          views",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> selectjoinchractersepisodes",
+				"selectjoinchractersepisodes, sourcesimpsonlocations join(selectjoinchractersepisodes@id == sourcesimpsonlocations@id,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join",
+				"sourcesimpsonlocations select(mapColumn(",
+				"          id,",
+				"          name = normalized_name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectlocations",
+				"join sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Tabla as string,",
+				"          Uso as string",
+				"     ),",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> destinosimpsons",
+				"sourcesimpsonscriptlines sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          CHROM as string,",
+				"          POS as long,",
+				"          ID as string,",
+				"          REF as string,",
+				"          ALT as string,",
+				"          QUAL as double,",
+				"          FILTER as string,",
+				"          INFO as string,",
+				"          FORMAT as string,",
+				"          MUESTRA as long,",
+				"          VALOR as string,",
+				"          ORIGEN as string,",
+				"          FECHA_COPIA as timestamp,",
+				"          RESULTADO as string",
+				"     ),",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> destinoscripts"
 			]
 		}
 	}

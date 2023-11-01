@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "simpsons.csv",
+				"fileName": "simpsons/simpsons/simpsons.csv",
 				"folderPath": "Destino",
 				"fileSystem": "contenedortekne"
 			},

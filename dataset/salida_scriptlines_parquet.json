@@ -1,0 +1,81 @@
+{
+	"name": "salida_scriptlines_parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "storagetekne",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Salida"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "simpsons/scriptparquet/script.parquet",
+				"folderPath": "Destino",
+				"fileSystem": "contenedortekne"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "CHROM",
+				"type": "UTF8"
+			},
+			{
+				"name": "POS",
+				"type": "INT64"
+			},
+			{
+				"name": "ID",
+				"type": "UTF8"
+			},
+			{
+				"name": "REF",
+				"type": "UTF8"
+			},
+			{
+				"name": "ALT",
+				"type": "UTF8"
+			},
+			{
+				"name": "QUAL",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "FILTER",
+				"type": "UTF8"
+			},
+			{
+				"name": "INFO",
+				"type": "UTF8"
+			},
+			{
+				"name": "FORMAT",
+				"type": "UTF8"
+			},
+			{
+				"name": "MUESTRA",
+				"type": "INT64"
+			},
+			{
+				"name": "VALOR",
+				"type": "UTF8"
+			},
+			{
+				"name": "ORIGEN",
+				"type": "UTF8"
+			},
+			{
+				"name": "FECHA_COPIA",
+				"type": "INT96"
+			},
+			{
+				"name": "RESULTADO",
+				"type": "UTF8"
+			}
+		]
+	}
+}
